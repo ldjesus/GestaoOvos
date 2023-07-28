@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using GestaoOvos.Data;
 
 namespace GestaoOvos
 {
@@ -33,6 +35,10 @@ namespace GestaoOvos
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddDbContext<GestaoOvosContext>(options =>
+                    options.UseMySql(Configuration.GetConnectionString("GestaoOvosContext"), builder => 
+                    builder.MigrationsAssembly("GestaoOvos")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

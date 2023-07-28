@@ -1,4 +1,5 @@
 ﻿using GestaoOvos.Models;
+using GestaoOvos.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;

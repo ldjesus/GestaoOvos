@@ -1,6 +1,6 @@
 using System;
 
-namespace GestaoOvos.Models
+namespace GestaoOvos.Models.ViewModels
 {
     public class ErrorViewModel
     {
