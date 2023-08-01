@@ -8,13 +8,15 @@
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-flatly.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
     </environment>
-    <environment exclude="Development">
+    @*<environment exclude="Development">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    </environment>
+    </environment>*@
+   
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -26,13 +28,31 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">GestaoOvos</a>
+                <a asp-area="" asp-controller="Vendas" asp-action="Index" class="navbar-brand">GestaoOvos</a>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                <ul class="nav navbar-nav">                   
+
+                    <li><a asp-area="" asp-controller="Vendas" asp-action="Index">Vendas</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">Cadastros Básicos <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a asp-area="" asp-controller="Clientes" asp-action="Index">Clientes</a></li>
+                            <li><a asp-area="" asp-controller="Vendedores" asp-action="Index">Vendedores</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a asp-area="" asp-controller="Produtos" asp-action="Index">Produtos</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">Configurações <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a asp-area="" asp-controller="FormasPagamentos" asp-action="Index">Forma de Pagamento</a></li>
+                            <li><a asp-area="" asp-controller="Quantidades" asp-action="Index">Quantidade</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a asp-area="" asp-controller="StatusEntregas" asp-action="Index">Status de Entrega</a></li>
+                            <li><a asp-area="" asp-controller="StatusPgtos" asp-action="Index">Status de Pagamento</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -51,6 +71,7 @@
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" type="text/javascript"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
@@ -68,6 +89,7 @@
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
+
 
     @RenderSection("Scripts", required: false)
 </body>

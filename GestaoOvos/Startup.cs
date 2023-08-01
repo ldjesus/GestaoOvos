@@ -11,6 +11,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using GestaoOvos.Data;
+using GestaoOvos.Services;
+using GestaoOvos.Services.VendedorService;
 
 namespace GestaoOvos
 {
@@ -39,6 +41,15 @@ namespace GestaoOvos
             services.AddDbContext<GestaoOvosContext>(options =>
                     options.UseMySql(Configuration.GetConnectionString("GestaoOvosContext"), builder => 
                     builder.MigrationsAssembly("GestaoOvos")));
+
+            services.AddScoped<VendedorService>();
+            services.AddScoped<VendaService>();
+            services.AddScoped<ClienteService>();
+            services.AddScoped<ProdutoService>();
+            services.AddScoped<StatusPgtoService>();
+            services.AddScoped<StatusEntregaService>();
+            services.AddScoped<FormaPagamentoService>();
+            services.AddScoped<QuantidadeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,7 +73,7 @@ namespace GestaoOvos
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Vendas}/{action=Index}/{id?}");
             });
         }
     }

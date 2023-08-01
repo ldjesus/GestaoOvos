@@ -3,14 +3,16 @@ using System;
 using GestaoOvos.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GestaoOvos.Migrations
 {
     [DbContext(typeof(GestaoOvosContext))]
-    partial class GestaoOvosContextModelSnapshot : ModelSnapshot
+    [Migration("20230801175614_SegundaMigration")]
+    partial class SegundaMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

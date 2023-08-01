@@ -3,14 +3,16 @@ using System;
 using GestaoOvos.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GestaoOvos.Migrations
 {
     [DbContext(typeof(GestaoOvosContext))]
-    partial class GestaoOvosContextModelSnapshot : ModelSnapshot
+    [Migration("20230731222835_PrimeiroMigration")]
+    partial class PrimeiroMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,7 +41,7 @@ namespace GestaoOvos.Migrations
                     b.ToTable("Cliente");
                 });
 
-            modelBuilder.Entity("GestaoOvos.Models.FormaPagamento", b =>
+            modelBuilder.Entity("GestaoOvos.Models.Enums.FormaPagamento", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -49,6 +51,30 @@ namespace GestaoOvos.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("FormaPagamento");
+                });
+
+            modelBuilder.Entity("GestaoOvos.Models.Enums.StatusEntrega", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Descricao");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StatusEntrega");
+                });
+
+            modelBuilder.Entity("GestaoOvos.Models.Enums.StatusPgto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Descricao");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StatusPgto");
                 });
 
             modelBuilder.Entity("GestaoOvos.Models.Produto", b =>
@@ -65,46 +91,6 @@ namespace GestaoOvos.Migrations
                     b.ToTable("Produto");
                 });
 
-            modelBuilder.Entity("GestaoOvos.Models.Quantidade", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Descricao");
-
-                    b.Property<int>("Qtd");
-
-                    b.Property<double>("Valor");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Quantidade");
-                });
-
-            modelBuilder.Entity("GestaoOvos.Models.StatusEntrega", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Descricao");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("StatusEntrega");
-                });
-
-            modelBuilder.Entity("GestaoOvos.Models.StatusPgto", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Descricao");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("StatusPgto");
-                });
-
             modelBuilder.Entity("GestaoOvos.Models.Vendas", b =>
                 {
                     b.Property<int>("Id")
@@ -112,17 +98,13 @@ namespace GestaoOvos.Migrations
 
                     b.Property<int>("ClienteId");
 
-                    b.Property<DateTime>("DataPagamento");
-
                     b.Property<DateTime>("DataVenda");
 
                     b.Property<int>("FormaPagamentoId");
 
                     b.Property<int>("ProdutoId");
 
-                    b.Property<int>("Qtd");
-
-                    b.Property<int?>("QuantidadeId");
+                    b.Property<int>("Quantidade");
 
                     b.Property<int>("StatusEntregaId");
 
@@ -139,8 +121,6 @@ namespace GestaoOvos.Migrations
                     b.HasIndex("FormaPagamentoId");
 
                     b.HasIndex("ProdutoId");
-
-                    b.HasIndex("QuantidadeId");
 
                     b.HasIndex("StatusEntregaId");
 
@@ -170,7 +150,7 @@ namespace GestaoOvos.Migrations
                         .HasForeignKey("ClienteId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("GestaoOvos.Models.FormaPagamento", "FormaPagamento")
+                    b.HasOne("GestaoOvos.Models.Enums.FormaPagamento", "FormaPagamento")
                         .WithMany()
                         .HasForeignKey("FormaPagamentoId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -180,16 +160,12 @@ namespace GestaoOvos.Migrations
                         .HasForeignKey("ProdutoId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("GestaoOvos.Models.Quantidade", "Quantidade")
-                        .WithMany()
-                        .HasForeignKey("QuantidadeId");
-
-                    b.HasOne("GestaoOvos.Models.StatusEntrega", "StatusEntrega")
+                    b.HasOne("GestaoOvos.Models.Enums.StatusEntrega", "StatusEntrega")
                         .WithMany()
                         .HasForeignKey("StatusEntregaId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("GestaoOvos.Models.StatusPgto", "StatusPgto")
+                    b.HasOne("GestaoOvos.Models.Enums.StatusPgto", "StatusPgto")
                         .WithMany()
                         .HasForeignKey("StatusPgtoId")
                         .OnDelete(DeleteBehavior.Cascade);
