@@ -4,72 +4,156 @@
     ViewData["Title"] = "Vendas";
 }
 
+<br />
 <h2>Painel de Vendas</h2>
-
-
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div class="form-group">
-                <label asp-for="Vendas.ClienteId" class="control-label">Nome do Cliente</label>
-                <select asp-for="Vendas.ClienteId" class="form-control" asp-items="@(new SelectList(Model.Clientes,"Id","Nome"))"></select>
-            </div>
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group">
-                <label asp-for="Vendas.VendedorId" class="control-label">Nome do vendedor</label>
-                <select asp-for="Vendas.VendedorId" class="form-control" asp-items="@(new SelectList(Model.Vendedores,"Id","Nome"))"> </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Vendas.ProdutoId" class="control-label">Produto</label>
-                <select asp-for="Vendas.ProdutoId" class="form-control" asp-items="@(new SelectList(Model.Produtos,"Id","Nome"))"> </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Vendas.Qtd" class="control-label">Quantidade</label>
-                <select asp-for="Vendas.Qtd" class="form-control" asp-items="@(new SelectList(Model.Quantidades,"Id","Descricao"))"> </select>
-            </div>
-            <div id="qtd"></div>
+    <form class="col-auto" href="@Url.Action("Create","Venda")" method="post">
 
-            <div class="form-group">
-                <label asp-for="Vendas.Quantidade" class="control-label">Adicionar mais ovos</label>
-                <input asp-for="Vendas.Quantidade" class="form-control" />
-                <span asp-validation-for="Vendas.Quantidade" class="text-danger"></span>
+        <div class="card mb-3">
+            <div class="card-header">
+                Cliente
             </div>
-            <div class="form-group">
-                <label asp-for="Vendas.Total" class="control-label"></label>
-                <input asp-for="Vendas.Total" class="form-control" />
-                <span asp-validation-for="Vendas.Total" class="text-danger"></span>
+            <div class="p-2 mt-3 mb-3">
+                <div class="col-md-5">
+                    @Html.DropDownListFor(model => model.Vendas.ClienteId,
+                    new SelectList(Model.Clientes,"Id","Nome"),"Selecione",
+                    new { @class = "form-select"})
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Vendas.StatusPgtoId" class="control-label">Status Pagamento</label>
-                <select asp-for="Vendas.StatusPgtoId" class="form-control" asp-items="@(new SelectList(Model.Status,"Id","Descricao"))"> </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Vendas.DataPagamento" class="control-label">Data do Pagamento</label>
-                <input asp-for="Vendas.DataPagamento" class="form-control" />
-                <span asp-validation-for="Vendas.DataPagamento" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Vendas.FormaPagamentoId" class="control-label">Forma Pagamento</label>
-                <select asp-for="Vendas.FormaPagamentoId" class="form-control" asp-items="@(new SelectList(Model.FormaPagamentos,"Id","Descricao"))"> </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Vendas.StatusEntregaId" class="control-label">Entrega</label>
-                <select asp-for="Vendas.StatusEntregaId" class="form-control" asp-items="@(new SelectList(Model.StatusEntregas,"Id","Descricao"))"> </select>
+        </div>
+
+        @* <div class="hidden">
+        <label asp-for="Vendas.VendedorId" class="form-label">Nome do vendedor</label>
+        <select asp-for="Vendas.VendedorId" class="form-select form-select-sm mb-3" asp-items="@(new SelectList(Model.Vendedores,"Id","Nome"))"> </select>
+        </div>
+        <div class="hidden">
+        <label asp-for="Vendas.ProdutoId" class="form-label">Produto</label>
+        <select asp-for="Vendas.ProdutoId" class="" form-select form-select-sm mb-3" asp-items="@(new SelectList(Model.Produtos,"Id","Nome"))"> </select>
+        </div>*@
+
+
+        @*  <div class="col-auto">
+        <label asp-for="Vendas.Qtd" class="form-label">Quantidade</label>
+        @Html.DropDownListFor(model => model.Vendas.Total,
+        new SelectList(Model.Quantidades, "Qtd", "Descricao"),"Selecione",
+        new { @class = "form-select form-select-sm mb-3", @id="ObjQtd"})
+
+        </div>*@
+
+        <div class="card mb-3">
+            <div class="card-header">
+                Quantidade de ovos
             </div>
 
-            <div class="form-group">
-                <input type="submit" value="Salvar" class="btn btn-default" />
+            <div class="row mb-3 mt-3">
+                <div class="col-auto">
+                    @foreach (var item in Model.Quantidades)
+                    {
+                        <div class="form-check form-check-inline">                          
+                            @Html.RadioButtonFor(model => model.Vendas.Qtd,@item.Qtd,new {@checked=true, @id="ObjQtd"+item.Qtd, @type="radio",@name="ObjQtd", @class="form-check-input"}) @item.Descricao
+                        </div>
+                    }
+                    <a href="#" id="BtnMaisOvos" class="btn btn-success"><i class="fa-solid fa-circle-plus"></i> Ovos</a>
+                </div>
+                <div class="col-md-3">
+                    <input name="Qtd" id="QtdTotal" class="form-control" />
+                </div>
+
+
             </div>
-        </form>
-    </div>
+        </div>
+
+        <div class="card mb-3">
+            <div class="card-header">
+                Situação de Pagamento
+            </div>
+            <div class="col-auto mt-3 mb-3">
+                @foreach (var item in Model.Status)
+                {
+                    <div class="form-check form-check-inline me-4">
+                        @Html.RadioButtonFor(model => model.Vendas.StatusPgtoId,@item.Id) @item.Descricao
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="card mb-3">
+            <div class="card-header">
+                Forma Pagamento
+            </div>
+            <div class="col-auto  mt-3 mb-3">
+                @foreach (var item in Model.FormaPagamentos)
+                {
+                    <div class="form-check form-check-inline me-4">
+                        @Html.RadioButtonFor(model => model.Vendas.FormaPagamentoId,@item.Id) @item.Descricao
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="card mb-3">
+            <div class="card-header">
+                Situação da Entrega
+            </div>
+            <div class="col-auto  mt-3 mb-3">
+                @foreach (var item in Model.StatusEntregas)
+                {
+                    <div class="form-check form-check-inline me-4">
+                        @Html.RadioButtonFor(model => model.Vendas.StatusEntregaId,@item.Id) @item.Descricao
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="col-auto p-3">
+            <button type="submit" class="btn btn-success btn-group-sm"> Salvar <i class="fa-solid fa-floppy-disk"></i></button>
+            <a class="btn btn-primary btn-group-sm" asp-action="Index"><i class="fa-solid fa-arrow-left"></i> Voltar</a>
+        </div>
+    </form>
+</div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("[name='ObjQtd']").on('change', function () {
+               console.log('aqui')
+                var qtd = $("#ObjQtd:checked").val();
+                console.log(qtd);
+                if (qtd == 0) {
+                    //document.querySelector("[name='Qtd']").value = $("#ObjQtd option:selected").val();
+                    document.querySelector("[name='Qtd']").value = qtd;
+                }
+
+            });
+
+            $('#BtnMaisOvos').on('click', function () {
+                const QtdAtual = $('#QtdTotal').val();
+                console.log(QtdAtual);
+                if (QtdAtual > 0) {
+                    const OvosSelec = $("#ObjQtd option:selected").val();
+                    const somado = parseInt(QtdAtual) + parseInt(OvosSelec);
+                    $('#QtdTotal').val(somado)
+                }
+
+            });
+
+            $('#btn-Salvar').on('click', function () {
+                $('form').submit()
+            })
+
+        });
+
+    </script>
 }

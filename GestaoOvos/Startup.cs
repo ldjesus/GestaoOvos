@@ -73,7 +73,7 @@ namespace GestaoOvos
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Vendas}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

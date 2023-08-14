@@ -58,6 +58,7 @@ namespace GestaoOvos.Services
         {
             try
             {
+                venda.DataVenda = DateTime.Now;
                 context.Vendas.Add(venda);
                 context.SaveChanges();
                 return "Venda realizado com sucesso.";

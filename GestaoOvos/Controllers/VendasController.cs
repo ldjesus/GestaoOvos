@@ -81,8 +81,9 @@ namespace GestaoOvos.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Vendas vendas)
-        {            
-            return View(vendaService.Salvar(vendas));
+        {
+            vendaService.Salvar(vendas);
+            return RedirectToAction("Index");
         }
 
         public IActionResult Edit(int? id)
