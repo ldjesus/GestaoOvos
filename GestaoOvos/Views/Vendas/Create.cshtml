@@ -49,17 +49,19 @@
             </div>
 
             <div class="row mb-3 mt-3">
-                <div class="col-auto">
-                    @foreach (var item in Model.Quantidades)
-                    {
-                        <div class="form-check form-check-inline">                          
-                            @Html.RadioButtonFor(model => model.Vendas.Qtd,@item.Qtd,new {@checked=true, @id="ObjQtd"+item.Qtd, @type="radio",@name="ObjQtd", @class="form-check-input"}) @item.Descricao
-                        </div>
-                    }
-                    <a href="#" id="BtnMaisOvos" class="btn btn-success"><i class="fa-solid fa-circle-plus"></i> Ovos</a>
-                </div>
-                <div class="col-md-3">
-                    <input name="Qtd" id="QtdTotal" class="form-control" />
+                <div class="d-flex align-items-center ">
+                    <div class="col-md-4">
+                        @foreach (var item in Model.Quantidades)
+                        {
+                            <div class="form-check form-check-inline qtdDefinido">
+                                @Html.RadioButtonFor(model => model.Vendas.Qtd,item.Qtd,new {@onchange="RecuperaQtd(this.value)", @id="ObjQtd", @type="radio",@name="ObjQtd"}) @item.Descricao
+                            </div>
+                        }
+                        <a href="#" id="BtnMaisOvos" class="btn btn-success"><i class="fa-solid fa-plus fa-sm"></i></a>
+                    </div>
+                    <div class="col-md-3">
+                        <input name="Qtd" id="QtdTotal" class="form-control" />
+                    </div>
                 </div>
 
 
@@ -70,13 +72,20 @@
             <div class="card-header">
                 Situação de Pagamento
             </div>
-            <div class="col-auto mt-3 mb-3">
-                @foreach (var item in Model.Status)
-                {
-                    <div class="form-check form-check-inline me-4">
-                        @Html.RadioButtonFor(model => model.Vendas.StatusPgtoId,@item.Id) @item.Descricao
+            <div class="row mt-3 mb-3">
+                <div class="d-flex align-items-center">
+                    <div class="col-md-4">
+                        @foreach (var item in Model.Status)
+                        {
+                            <div class="form-check form-check-inline me-3">
+                                @Html.RadioButtonFor(model => model.Vendas.StatusPgtoId,@item.Id,new {@onchange="SituacaoPgto(this.value)"}) @item.Descricao
+                            </div>
+                        }
                     </div>
-                }
+                    <div class="col-md-4">
+                        <input type="date" name="dataPgto" id="dataPgto" class="form-control" style="display:none" />
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -84,13 +93,22 @@
             <div class="card-header">
                 Forma Pagamento
             </div>
-            <div class="col-auto  mt-3 mb-3">
-                @foreach (var item in Model.FormaPagamentos)
-                {
-                    <div class="form-check form-check-inline me-4">
-                        @Html.RadioButtonFor(model => model.Vendas.FormaPagamentoId,@item.Id) @item.Descricao
+            <div class="row mt-3 mb-3">
+                <div class="d-flex align-items-center">
+                    <div class="col-md-4">
+                        @foreach (var item in Model.FormaPagamentos)
+                        {
+                            <div class="form-check form-check-inline me-4">
+                                @Html.RadioButtonFor(model => model.Vendas.FormaPagamentoId,@item.Id,new{@onchange="FormaPgto(this.value)"}) @item.Descricao
+                            </div>
+                        }
                     </div>
-                }
+                    <div class="col-md-3">
+                        <textarea id="Comentario" rows="2" cols="30" style="display:none"></textarea>
+                    </div>
+
+                </div>
+
             </div>
         </div>
 
@@ -98,20 +116,30 @@
             <div class="card-header">
                 Situação da Entrega
             </div>
-            <div class="col-auto  mt-3 mb-3">
-                @foreach (var item in Model.StatusEntregas)
-                {
-                    <div class="form-check form-check-inline me-4">
-                        @Html.RadioButtonFor(model => model.Vendas.StatusEntregaId,@item.Id) @item.Descricao
+            <div class="row mt-3 mb-3">
+                <div class="d-flex align-items-center">
+                    <div class="col-md-4">
+                        @foreach (var item in Model.StatusEntregas)
+                        {
+                            <div class="form-check form-check-inline me-4">
+                                @Html.RadioButtonFor(model => model.Vendas.StatusEntregaId,@item.Id,new{@onchange="SituacaoEntrega(this.value)"}) @item.Descricao
+                            </div>
+                        }
                     </div>
-                }
+                    <div class="col-md-3">
+                        <input id="dataEntrega" type="date" class="form-control" style="display:none" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="d-flex justify-content-evenly">
+                <a class="btn btn-primary mt-3 mb-3" asp-action="Index"><i class="fa-solid fa-arrow-left"></i> Voltar</a>
+                <button type="submit" class="btn btn-success mt-3 mb-3"> Salvar <i class="fa-solid fa-floppy-disk"></i></button>
+               
             </div>
         </div>
 
-        <div class="col-auto p-3">
-            <button type="submit" class="btn btn-success btn-group-sm"> Salvar <i class="fa-solid fa-floppy-disk"></i></button>
-            <a class="btn btn-primary btn-group-sm" asp-action="Index"><i class="fa-solid fa-arrow-left"></i> Voltar</a>
-        </div>
     </form>
 </div>
 </div>
@@ -124,29 +152,50 @@
     }
 
     <script>
+        function RecuperaQtd(qtd) {
+
+            if (qtd > 0) {
+                $('#QtdTotal').val(qtd)
+            }
+        }
+
+        function SituacaoPgto(st) {
+            if (st > 1) {
+                $('#dataPgto').show()
+            } else (
+                $('#dataPgto').css("display", "none")
+            )
+        }
+
+        function SituacaoEntrega(se) {
+            if (se > 1) {
+                $('#dataEntrega').show()
+            } else (
+                $('#dataEntrega').css("display", "none")
+            )
+        }
+        function FormaPgto(desc) {
+            if (desc == 2) {
+                $('#Comentario').show()
+            } else (
+                $('#Comentario').css("display", "none")
+            )
+        }
 
         $(document).ready(function () {
-
-            $("[name='ObjQtd']").on('change', function () {
-               console.log('aqui')
-                var qtd = $("#ObjQtd:checked").val();
-                console.log(qtd);
-                if (qtd == 0) {
-                    //document.querySelector("[name='Qtd']").value = $("#ObjQtd option:selected").val();
-                    document.querySelector("[name='Qtd']").value = qtd;
-                }
-
-            });
-
             $('#BtnMaisOvos').on('click', function () {
                 const QtdAtual = $('#QtdTotal').val();
-                console.log(QtdAtual);
-                if (QtdAtual > 0) {
-                    const OvosSelec = $("#ObjQtd option:selected").val();
-                    const somado = parseInt(QtdAtual) + parseInt(OvosSelec);
-                    $('#QtdTotal').val(somado)
+                if (QtdAtual < 1) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Escolha 12 ou 24 ovos!'
+                    })
+                    return;
                 }
-
+                const OvosSelec = $("#ObjQtd:checked").val();
+                const somado = parseInt(QtdAtual) + parseInt(OvosSelec);
+                $('#QtdTotal').val(somado)
             });
 
             $('#btn-Salvar').on('click', function () {
