@@ -1,18 +1,18 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using GestaoOvos.Data;
 using GestaoOvos.Services;
 using GestaoOvos.Services.VendedorService;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using GestaoOvos.Models;
+using Microsoft.AspNetCore.Identity;
+using System;
+using GestaoOvos.Services.Interface;
 
 namespace GestaoOvos
 {
@@ -28,6 +28,8 @@ namespace GestaoOvos
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers();
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -35,12 +37,24 @@ namespace GestaoOvos
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            //    .AddCookie(options =>
+            //    {
+            //        options.LoginPath = new PathString("/Login/Index/"); //401-Unouthorized
+            //        options.AccessDeniedPath = new PathString("/Error/Index/"); //403-Forbidden
+            //    });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddMvc();
 
             services.AddDbContext<GestaoOvosContext>(options =>
-                    options.UseMySql(Configuration.GetConnectionString("GestaoOvosContext"), builder => 
+                    options.UseSqlServer(Configuration.GetConnectionString("GestaoOvosContext"), builder =>
                     builder.MigrationsAssembly("GestaoOvos")));
+            services.AddIdentity<Usuario, IdentityRole>()
+                .AddEntityFrameworkStores<GestaoOvosContext>()
+                .AddDefaultTokenProviders();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<VendedorService>();
             services.AddScoped<VendaService>();
@@ -50,6 +64,7 @@ namespace GestaoOvos
             services.AddScoped<StatusEntregaService>();
             services.AddScoped<FormaPagamentoService>();
             services.AddScoped<QuantidadeService>();
+            services.AddScoped<IUsuarioService, UsuarioService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,12 +84,17 @@ namespace GestaoOvos
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            app.UseMvc(routes =>
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Vendas}/{action=Index}/{id?}");
             });
+
+
         }
     }
 }

@@ -1,11 +1,8 @@
 ﻿using GestaoOvos.Data;
 using GestaoOvos.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web.Mvc;
 
 namespace GestaoOvos.Services.VendedorService
 {

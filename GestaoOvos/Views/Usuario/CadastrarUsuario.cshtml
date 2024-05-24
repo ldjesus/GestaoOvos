@@ -1,0 +1,50 @@
+﻿@model GestaoOvos.Data.Dto.CreateUsuarioDto
+
+@{
+    ViewData["Title"] = "Criar usuário";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Criar usuário</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="Usuario" asp-action="CadastrarUsuario">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Nome" class="control-label"></label>
+                <input type="text" asp-for="Nome" class="form-control" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Username" class="control-label"></label>
+                <input type="text" asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PasswordHash" class="control-label"></label>
+                <input type="password" asp-for="PasswordHash" class="form-control" />
+                <span asp-validation-for="PasswordHash" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CompararPasswordHash" class="control-label"></label>
+                <input type="password" asp-for="CompararPasswordHash" class="form-control" />
+                <span asp-validation-for="CompararPasswordHash" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Salvar" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Voltar</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

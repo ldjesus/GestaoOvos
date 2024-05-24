@@ -8,6 +8,11 @@
 <div class="jumbotron text-center">
     <h2>@ViewData["Title"]</h2>
 </div>
+<br />
+@if (ViewBag.Message != null)
+{
+    <p><h3>@ViewBag.Message</h3></p>
+}
 <div>
     <p>
         <a class="btn btn-success btn-sm" asp-action="Create">Nova Venda</a>
@@ -16,7 +21,7 @@
 <hr />
 <table class="table table-bordered table-striped display" id="tabela" style="width:100%">
     <thead>
-        <tr class="btn-primary">           
+        <tr class="btn-primary">
             <th>
                 Cliente
             </th>
@@ -38,33 +43,33 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cliente.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StatusPgto.Descricao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StatusEntrega.Descricao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Qtd)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Total)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Alterar</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Deletar</a>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cliente.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StatusPgto.Descricao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StatusEntrega.Descricao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Qtd)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Alterar</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Deletar</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
 
-@section Scripts{
+@section Scripts {
     <script type="text/javascript" class="init">
         $(document).ready(function () {
             $('#tabela').DataTable({

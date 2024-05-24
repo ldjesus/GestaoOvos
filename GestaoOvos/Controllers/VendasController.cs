@@ -40,6 +40,13 @@ namespace GestaoOvos.Controllers
         // GET: Vendas
         public IActionResult Index()
         {
+            if (TempData.ContainsKey("Message"))
+            {
+                string message = TempData["Message"].ToString();
+                ViewBag.Message = message;  // Passando a mensagem para a View
+                
+            }          
+          
             return View(vendaService.ListarVendas());
         }
 
@@ -82,7 +89,7 @@ namespace GestaoOvos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Vendas vendas)
         {
-            vendaService.Salvar(vendas);
+            vendaService.Salvar(vendas);            
             return RedirectToAction("Index");
         }
 

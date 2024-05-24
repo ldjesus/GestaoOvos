@@ -18,21 +18,21 @@
             <div class="p-2 mt-3 mb-3">
                 <div class="col-md-5">
                     @Html.DropDownListFor(model => model.Vendas.ClienteId,
-                    new SelectList(Model.Clientes,"Id","Nome"),"Selecione",
-                    new { @class = "form-select"})
+                             new SelectList(Model.Clientes, "Id", "Nome"), "Selecione",
+                             new { @class = "form-select" })
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 </div>
             </div>
         </div>
 
-        @* <div class="hidden">
-        <label asp-for="Vendas.VendedorId" class="form-label">Nome do vendedor</label>
-        <select asp-for="Vendas.VendedorId" class="form-select form-select-sm mb-3" asp-items="@(new SelectList(Model.Vendedores,"Id","Nome"))"> </select>
+        <div class="hidden">
+            <label asp-for="Vendas.VendedorId" class="form-label">Nome do vendedor</label>
+            <select asp-for="Vendas.VendedorId" class="form-select form-select-sm mb-3" asp-items="@(new SelectList(Model.Vendedores,"Id","Nome"))"> </select>
         </div>
         <div class="hidden">
-        <label asp-for="Vendas.ProdutoId" class="form-label">Produto</label>
-        <select asp-for="Vendas.ProdutoId" class="" form-select form-select-sm mb-3" asp-items="@(new SelectList(Model.Produtos,"Id","Nome"))"> </select>
-        </div>*@
+            <label asp-for="Vendas.ProdutoId" class="form-label">Produto</label>
+            <select asp-for="Vendas.ProdutoId" class="" form-select form-select-sm mb-3" asp-items="@(new SelectList(Model.Produtos,"Id","Nome"))"> </select>
+        </div>
 
 
         @*  <div class="col-auto">
@@ -54,13 +54,14 @@
                         @foreach (var item in Model.Quantidades)
                         {
                             <div class="form-check form-check-inline qtdDefinido">
-                                @Html.RadioButtonFor(model => model.Vendas.Qtd,item.Qtd,new {@onchange="RecuperaQtd(this.value)", @id="ObjQtd", @type="radio",@name="ObjQtd"}) @item.Descricao
+                                @Html.RadioButtonFor(model => model.Vendas.Qtd, item.Qtd, new { @onchange = "RecuperaQtd(this.value)", @id = "ObjQtd", @type = "radio", @name = "ObjQtd" }) @item.Descricao
                             </div>
                         }
                         <a href="#" id="BtnMaisOvos" class="btn btn-success"><i class="fa-solid fa-plus fa-sm"></i></a>
                     </div>
                     <div class="col-md-3">
-                        <input name="Qtd" id="QtdTotal" class="form-control" />
+                        <input id="QtdTotal" class="form-control" />
+                        <input type="hidden" name="Qtd" id="Qtd" />
                     </div>
                 </div>
 
@@ -78,7 +79,7 @@
                         @foreach (var item in Model.Status)
                         {
                             <div class="form-check form-check-inline me-3">
-                                @Html.RadioButtonFor(model => model.Vendas.StatusPgtoId,@item.Id,new {@onchange="SituacaoPgto(this.value)"}) @item.Descricao
+                                @Html.RadioButtonFor(model => model.Vendas.StatusPgtoId, @item.Id, new { @onchange = "SituacaoPgto(this.value)" }) @item.Descricao
                             </div>
                         }
                     </div>
@@ -99,7 +100,7 @@
                         @foreach (var item in Model.FormaPagamentos)
                         {
                             <div class="form-check form-check-inline me-4">
-                                @Html.RadioButtonFor(model => model.Vendas.FormaPagamentoId,@item.Id,new{@onchange="FormaPgto(this.value)"}) @item.Descricao
+                                @Html.RadioButtonFor(model => model.Vendas.FormaPagamentoId, @item.Id, new { @onchange = "FormaPgto(this.value)" }) @item.Descricao
                             </div>
                         }
                     </div>
@@ -122,7 +123,7 @@
                         @foreach (var item in Model.StatusEntregas)
                         {
                             <div class="form-check form-check-inline me-4">
-                                @Html.RadioButtonFor(model => model.Vendas.StatusEntregaId,@item.Id,new{@onchange="SituacaoEntrega(this.value)"}) @item.Descricao
+                                @Html.RadioButtonFor(model => model.Vendas.StatusEntregaId, @item.Id, new { @onchange = "SituacaoEntrega(this.value)" }) @item.Descricao
                             </div>
                         }
                     </div>
@@ -136,7 +137,7 @@
             <div class="d-flex justify-content-evenly">
                 <a class="btn btn-primary mt-3 mb-3" asp-action="Index"><i class="fa-solid fa-arrow-left"></i> Voltar</a>
                 <button type="submit" class="btn btn-success mt-3 mb-3"> Salvar <i class="fa-solid fa-floppy-disk"></i></button>
-               
+
             </div>
         </div>
 
@@ -154,7 +155,9 @@
     <script>
         function RecuperaQtd(qtd) {
 
+            console.log('RecuperaQtd', qtd);
             if (qtd > 0) {
+                console.log('dentro RecuperaQtd', qtd);
                 $('#QtdTotal').val(qtd)
             }
         }
@@ -195,7 +198,9 @@
                 }
                 const OvosSelec = $("#ObjQtd:checked").val();
                 const somado = parseInt(QtdAtual) + parseInt(OvosSelec);
-                $('#QtdTotal').val(somado)
+                console.log('botao mais', somado);
+                $('#QtdTotal').val(somado);
+                QtdTotalSelecionado(somado);
             });
 
             $('#btn-Salvar').on('click', function () {
@@ -203,6 +208,12 @@
             })
 
         });
+
+        function QtdTotalSelecionado(qtd) {
+            console.log('Total qtd vai controller', qtd);
+            $('#Qtd').val(qtd);
+        }
+
 
     </script>
 }
